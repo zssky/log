@@ -1,5 +1,9 @@
 ![Logo](/res/logo.png?raw=true "Log logo")
-[![Circle CI](https://circleci.com/gh/dearcode/candy.svg?style=svg)](https://circleci.com/gh/dearcode/candy) 
 
-logging
+log
 =======
+功能说明
+1. 支持日志高亮
+2. 可以设置不同的日志级别
+3. 可以根据天或者小时进行日志拆分
+4. 日志支持函数名称、行、文件的记录，方便定位排查问题
