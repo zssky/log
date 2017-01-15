@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"reflect"
 	"runtime"
 	"sync"
 	"time"
@@ -268,11 +269,11 @@ func (l *logger) log(t LogType, v ...interface{}) {
 	v1 := make([]interface{}, len(v)+2)
 	logStr, logColor := LogTypeToString(t)
 	if l.highlighting {
-		v1[0] = "\033" + logColor + "m[" + logStr + "]"
+		v1[0] = "\033" + logColor + "m[" + logStr + "][" + l.caller() + "]"
 		copy(v1[1:], v)
 		v1[len(v)+1] = "\033[0m"
 	} else {
-		v1[0] = "[" + logStr + "]"
+		v1[0] = "[" + logStr + "][" + l.caller() + "]"
 		copy(v1[1:], v)
 		v1[len(v)+1] = ""
 	}
@@ -295,7 +296,7 @@ func (l *logger) logf(t LogType, format string, v ...interface{}) {
 	logStr, logColor := LogTypeToString(t)
 	var s string
 	if l.highlighting {
-		s = "\033" + logColor + "m[" + logStr + "][" + l.caller() + "] " + fmt.Sprintf(format, v...) + "\033[0m"
+		s = "\033" + logColor + "m[" + logStr + "][" + l.caller() + "]" + fmt.Sprintf(format, v...) + "\033[0m"
 	} else {
 		s = "[" + logStr + "][" + l.caller() + "] " + fmt.Sprintf(format, v...)
 	}
