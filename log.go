@@ -259,8 +259,7 @@ func (l *logger) log(t LogType, v ...interface{}) {
 		return
 	}
 
-	err := l.rotate()
-	if err != nil {
+	if err := l.rotate(); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
@@ -268,11 +267,11 @@ func (l *logger) log(t LogType, v ...interface{}) {
 	v1 := make([]interface{}, len(v)+2)
 	logStr, logColor := LogTypeToString(t)
 	if l.highlighting {
-		v1[0] = "\033" + logColor + "m[" + logStr + "][" + l.caller() + "]"
+		v1[0] = "\033" + logColor + "m" + logStr + " " + l.caller() + " "
 		copy(v1[1:], v)
 		v1[len(v)+1] = "\033[0m"
 	} else {
-		v1[0] = "[" + logStr + "][" + l.caller() + "]"
+		v1[0] = logStr + " " + l.caller() + " "
 		copy(v1[1:], v)
 		v1[len(v)+1] = ""
 	}
@@ -286,8 +285,7 @@ func (l *logger) logf(t LogType, format string, v ...interface{}) {
 		return
 	}
 
-	err := l.rotate()
-	if err != nil {
+	if err := l.rotate(); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
@@ -295,9 +293,9 @@ func (l *logger) logf(t LogType, format string, v ...interface{}) {
 	logStr, logColor := LogTypeToString(t)
 	var s string
 	if l.highlighting {
-		s = "\033" + logColor + "m[" + logStr + "][" + l.caller() + "]" + fmt.Sprintf(format, v...) + "\033[0m"
+		s = "\033" + logColor + "m" + logStr + " " + l.caller() + " " + fmt.Sprintf(format, v...) + "\033[0m"
 	} else {
-		s = "[" + logStr + "][" + l.caller() + "] " + fmt.Sprintf(format, v...)
+		s = logStr + " " + l.caller() + " " + fmt.Sprintf(format, v...)
 	}
 	l._log.Output(4, s)
 }
@@ -373,7 +371,7 @@ func LogTypeToString(t LogType) (string, string) {
 	case LOG_DEBUG:
 		return "debug", "[0;36"
 	case LOG_INFO:
-		return "info", "[0;37"
+		return "info", "[0;32"
 	}
 	return "unknown", "[0;37"
 }
