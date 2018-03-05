@@ -1,7 +1,11 @@
-![Logo](/res/logo.png?raw=true "Log logo")
-
 log
 =======
+
+[![Build Status Travis](https://travis-ci.org/zssky/log.svg?branch=master)](https://github.com/zssky/log)
+
+![Logo](/res/logo.png?raw=true "Log logo")
+
+
 ## 项目背景
   功能开发日志打印是必不可少的， 之前使用ngaut开发的日志， 由于想支持函数名称的显示，所以就自己创建了  
 做二次开发，后续根据需要再增加其他功能。  
