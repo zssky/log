@@ -152,6 +152,7 @@ type logger struct {
 	fileName  string
 	logSuffix string
 	fd        *os.File
+	skip      int
 
 	lock sync.Mutex
 }
@@ -171,6 +172,10 @@ func (l *logger) SetLevelByString(level string) {
 func (l *logger) SetRotateByDay() {
 	l.dailyRolling = true
 	l.logSuffix = genDayTime(time.Now())
+}
+
+func (l *logger) SetCallerSkip(skip int) {
+	l.skip = skip
 }
 
 func (l *logger) SetRotateByHour() {
@@ -241,7 +246,7 @@ func (l *logger) SetOutputByName(path string) error {
 }
 
 func (l *logger) caller() string {
-	pc, file, _, _ := runtime.Caller(4)
+	pc, file, _, _ := runtime.Caller(l.skip)
 	name := runtime.FuncForPC(pc).Name()
 	if i := bytes.LastIndexAny([]byte(name), "."); i != -1 {
 		name = name[i+1:]
@@ -389,5 +394,5 @@ func New() *logger {
 }
 
 func Newlogger(w io.Writer, prefix string) *logger {
-	return &logger{_log: log.New(w, prefix, LstdFlags), level: LOG_LEVEL_ALL, highlighting: true}
+	return &logger{_log: log.New(w, prefix, LstdFlags), level: LOG_LEVEL_ALL, highlighting: true, skip: 4}
 }
