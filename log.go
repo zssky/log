@@ -141,6 +141,10 @@ func SetRotateByHour() {
 	_log.SetRotateByHour()
 }
 
+func SetCallerSkip(skip int) {
+	_log.SetCallerSkip(skip)
+}
+
 type logger struct {
 	_log         *log.Logger
 	level        LogLevel
